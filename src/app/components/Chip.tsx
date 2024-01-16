@@ -2,6 +2,7 @@
 
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
 
 export type ChipType = {
   id: string;
@@ -10,19 +11,32 @@ export type ChipType = {
 };
 
 type ChipProps = ChipType & {
+  isHighlighted?: boolean;
   removeOnClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
-function Chip({ id, avatar, name, removeOnClick }: ChipProps) {
+function Chip({ id, avatar, name, removeOnClick, isHighlighted }: ChipProps) {
   return (
-    <div className="bg-slate-100 border-slate-300 border rounded-full flex items-center p-0">
-      <div className="rounded-full bg-slate-200 mr-2" style={{ width: '32px' }}>
+    <div
+      className={classNames(
+        'bg-slate-100 border-slate-300 border rounded-full flex items-center p-0',
+        {
+          'bg-slate-300': isHighlighted,
+        }
+      )}
+    >
+      <div
+        className={classNames('rounded-full bg-slate-300 mr-2', {
+          'bg-slate-400': isHighlighted,
+        })}
+        style={{ width: '32px' }}
+      >
         <img className="w-100" src={avatar} alt={name} />
       </div>
       <small className="text-sm capitalize">{name}</small>
       <div
-        className="ml-2 mr-2"
         role="button"
+        className="ml-2 mr-2"
         data-chipid={id}
         onClick={removeOnClick}
       >

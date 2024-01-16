@@ -10,6 +10,7 @@ type InputWithChipsProps = {
 
 function InputWithChips({ placeholder }: InputWithChipsProps) {
   const [chips, setChips] = useState<ChipType[]>([]);
+  const [selectedChip, setSelectedChip] = useState<ChipType>();
 
   useEffect(() => {
     setChips(
@@ -17,22 +18,44 @@ function InputWithChips({ placeholder }: InputWithChipsProps) {
     );
   }, []);
 
-  const remove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const removeOnClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLDivElement;
     const chipId = target.getAttribute('data-chipid');
     if (!chipId) return;
     setChips((chips) => chips.filter(({ id }) => id !== chipId));
   };
 
+  const onKeyUpHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== 'Backspace') return;
+
+    if (selectedChip) {
+      setChips((chips) => chips.filter(({ id }) => id !== selectedChip.id));
+      setSelectedChip(undefined);
+    } else {
+      const lastChip: ChipType | null = chips[chips.length - 1];
+      if (!lastChip) return;
+      setSelectedChip(lastChip);
+    }
+  };
+
   return (
     <div className="flex flex-col flex-grow">
       <div className="flex flex-wrap pb-2 px-2 gap-3">
-        {chips.map((chip, index) => (
-          <Chip {...chip} key={index} removeOnClick={remove} />
-        ))}
+        {chips.map((chip, index) => {
+          const isHighlighted = selectedChip && selectedChip.id === chip.id;
+          return (
+            <Chip
+              key={index}
+              {...chip}
+              removeOnClick={removeOnClick}
+              isHighlighted={isHighlighted}
+            />
+          );
+        })}
         <input
           placeholder={placeholder}
           className="outline-none flex flex-grow"
+          onKeyUp={onKeyUpHandler}
         />
       </div>
       <div className="border-b-2 border-zinc-900"></div>
