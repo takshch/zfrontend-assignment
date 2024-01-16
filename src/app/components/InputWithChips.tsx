@@ -35,22 +35,19 @@ function InputWithChips({
 
   const onKeyUpHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    const value = target?.value || '';
+    if (event.key === 'Backspace' && value === '' && searchedText === '') {
+      if (selected) {
+        removeUser(selected.email);
+        setSelected(undefined);
+      } else {
+        const lastUser: UserType | null = users[users.length - 1];
+        if (!lastUser) return;
+        setSelected(lastUser);
+      }
+    } else {
+      onKeyUp(value);
     }
-
-    // const value = target?.value || '';
-    // if (event.key === 'Backspace' && value === '' && searchedText === '') {
-    //   if (selected) {
-    //     removeUser(selected.email);
-    //   } else {
-    //     const lastUser: UserType | null = users[users.length - 1];
-    //     if (!lastUser) return;
-    //     setSelected(lastUser);
-    //     inputRef.current?.blur();
-    //   }
-    // } else {
-    //   onKeyUp(value);
-    // }
   };
 
   return (

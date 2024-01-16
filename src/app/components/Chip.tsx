@@ -33,7 +33,7 @@ function Chip({ id, avatar, name, removeOnClick, isHighlighted }: ChipProps) {
       >
         <img className="w-100" src={avatar} alt={name} />
       </div>
-      <small className="text-sm capitalize cursor-pointer text-ellipsis whitespace-nowrap">
+      <small className="select-none	text-sm capitalize cursor-pointer text-ellipsis whitespace-nowrap">
         {name}
       </small>
       <div
