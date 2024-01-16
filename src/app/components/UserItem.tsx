@@ -25,7 +25,7 @@ function UserItem({ avatar, name, nameChunks, email, onClick }: UserItemProps) {
       >
         <img className="w-100" src={avatar} alt={name} />
       </div>
-      <div className="mr-auto pointer-events-none	">
+      <div className="mr-auto pointer-events-none overflow-hidden	text-ellipsis whitespace-nowrap">
         {nameChunks.map(({ value, isHighlighted }, index) => (
           <span
             key={index}
@@ -35,7 +35,9 @@ function UserItem({ avatar, name, nameChunks, email, onClick }: UserItemProps) {
           </span>
         ))}
       </div>
-      <div className="text-sm text-gray-400 pointer-events-none">{email}</div>
+      <div className="text-sm text-gray-400 pointer-events-none overflow-hidden	text-ellipsis whitespace-nowrap">
+        {email}
+      </div>
     </div>
   );
 }
