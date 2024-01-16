@@ -1,3 +1,7 @@
+# Screenshots
+![Screenshot from 2024-01-16 23-59-15](https://github.com/takshch/zfrontend-assignment/assets/26649558/f37dbe84-60c4-43b1-a9e8-ca7ca782f33d)
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
