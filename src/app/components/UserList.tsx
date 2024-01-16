@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import List from './List';
 import UserItem, { UserItemType } from './UserItem';
 import { UserType } from '../types/UserType';
 import { findAll } from 'highlight-words-core';
+import List from './List';
 
 type UserListProps = {
   keyword: string;
   users: UserType[];
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
-function UserList({ users, keyword }: UserListProps) {
+function UserList({ users, keyword, onClick }: UserListProps) {
   const [items, setItems] = useState<UserItemType[]>();
 
   useEffect(() => {
@@ -39,7 +40,7 @@ function UserList({ users, keyword }: UserListProps) {
     <List>
       {items.map((item) => (
         <li key={item.email}>
-          <UserItem {...item} />
+          <UserItem {...item} onClick={onClick} />
         </li>
       ))}
     </List>
