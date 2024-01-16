@@ -1,10 +1,6 @@
-type User = {
-  name: string;
-  avatar: string;
-  email: string;
-};
+import { UserType } from './types/UserType';
 
-export const mockUsers: User[] = [
+export const mockUsers: UserType[] = [
   {
     name: 'Ken Alvarez',
     avatar: 'https://api.dicebear.com/7.x/adventurer/png?seed=Dusty',

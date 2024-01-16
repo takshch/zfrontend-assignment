@@ -1,22 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { mockUsers } from '../mockUsers';
+import { useState } from 'react';
 import Chip, { ChipType } from './Chip';
 
 type InputWithChipsProps = {
   placeholder: string;
+  searchedText: string;
+  onKeyUp: (keywords: string) => void;
+  onFocus: () => void;
+  onBlur: () => void;
 };
 
-function InputWithChips({ placeholder }: InputWithChipsProps) {
+function InputWithChips({
+  placeholder,
+  searchedText,
+  onKeyUp,
+  onFocus,
+  onBlur,
+}: InputWithChipsProps) {
   const [chips, setChips] = useState<ChipType[]>([]);
   const [selectedChip, setSelectedChip] = useState<ChipType>();
-
-  useEffect(() => {
-    setChips(
-      mockUsers.map(({ email, name, avatar }) => ({ id: email, name, avatar }))
-    );
-  }, []);
 
   const removeOnClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLDivElement;
@@ -28,16 +31,21 @@ function InputWithChips({ placeholder }: InputWithChipsProps) {
     }
   };
 
-  const onKeyUpHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'Backspace') return;
+  const onKeyUpHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const target = event.target as HTMLInputElement;
+    const value = target?.value || '';
 
-    if (selectedChip) {
-      setChips((chips) => chips.filter(({ id }) => id !== selectedChip.id));
-      setSelectedChip(undefined);
+    if (searchedText === '' && value === '' && event.key == 'Backspace') {
+      if (selectedChip) {
+        setChips((chips) => chips.filter(({ id }) => id !== selectedChip.id));
+        setSelectedChip(undefined);
+      } else {
+        const lastChip: ChipType | null = chips[chips.length - 1];
+        if (!lastChip) return;
+        setSelectedChip(lastChip);
+      }
     } else {
-      const lastChip: ChipType | null = chips[chips.length - 1];
-      if (!lastChip) return;
-      setSelectedChip(lastChip);
+      onKeyUp(value.toLowerCase());
     }
   };
 
@@ -59,6 +67,8 @@ function InputWithChips({ placeholder }: InputWithChipsProps) {
           placeholder={placeholder}
           className="outline-none flex flex-grow"
           onKeyUp={onKeyUpHandler}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
       </div>
       <div className="border-b-2 border-zinc-900"></div>
