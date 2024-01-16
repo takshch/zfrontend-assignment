@@ -23,6 +23,9 @@ function InputWithChips({ placeholder }: InputWithChipsProps) {
     const chipId = target.getAttribute('data-chipid');
     if (!chipId) return;
     setChips((chips) => chips.filter(({ id }) => id !== chipId));
+    if (selectedChip && selectedChip.id === chipId) {
+      setSelectedChip(undefined);
+    }
   };
 
   const onKeyUpHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {

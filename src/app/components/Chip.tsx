@@ -36,12 +36,18 @@ function Chip({ id, avatar, name, removeOnClick, isHighlighted }: ChipProps) {
       <small className="text-sm capitalize">{name}</small>
       <div
         role="button"
-        className="ml-2 mr-2"
+        style={{ width: '24px', height: '24px' }}
+        className={classNames(
+          'flex items-center justify-center ml-2 mr-1 hover:bg-slate-300 rounded-full',
+          {
+            'hover:bg-slate-400': isHighlighted,
+          }
+        )}
         data-chipid={id}
         onClick={removeOnClick}
       >
         <FontAwesomeIcon
-          width={12}
+          size="sm"
           icon={faXmark}
           className="pointer-events-none"
         />
