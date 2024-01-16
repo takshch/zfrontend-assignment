@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Chip, { ChipType } from './Chip';
 import { UserType } from '../types/UserType';
 
@@ -23,6 +23,7 @@ function InputWithChips({
   onBlur,
   removeUser,
 }: InputWithChipsProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [selected, setSelected] = useState<UserType>();
 
   const removeOnClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -34,19 +35,22 @@ function InputWithChips({
 
   const onKeyUpHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
-    const value = target?.value || '';
-
-    if (searchedText === '' && value === '' && event.key == 'Backspace') {
-      if (selected) {
-        removeUser(selected.email);
-      } else {
-        const lastUser: UserType | null = users[users.length - 1];
-        if (!lastUser) return;
-        setSelected(lastUser);
-      }
-    } else {
-      onKeyUp(value);
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     }
+
+    // const value = target?.value || '';
+    // if (event.key === 'Backspace' && value === '' && searchedText === '') {
+    //   if (selected) {
+    //     removeUser(selected.email);
+    //   } else {
+    //     const lastUser: UserType | null = users[users.length - 1];
+    //     if (!lastUser) return;
+    //     setSelected(lastUser);
+    //     inputRef.current?.blur();
+    //   }
+    // } else {
+    //   onKeyUp(value);
+    // }
   };
 
   return (
@@ -66,8 +70,11 @@ function InputWithChips({
           );
         })}
         <input
+          value={searchedText}
+          ref={inputRef}
           placeholder={placeholder}
           className="outline-none flex flex-grow"
+          onChange={(e) => e?.target?.value && onKeyUp(e.target.value)}
           onKeyUp={onKeyUpHandler}
           onFocus={onFocus}
           onBlur={onBlur}

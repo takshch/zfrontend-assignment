@@ -9,15 +9,24 @@ export type UserItemType = {
 
 type UserItemProps = UserItemType & {
   onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onKeyUp: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 };
 
-function UserItem({ avatar, name, nameChunks, email, onClick }: UserItemProps) {
+function UserItem({
+  avatar,
+  name,
+  nameChunks,
+  email,
+  onClick,
+  onKeyUp,
+}: UserItemProps) {
   return (
     <div
-      role="button"
+      tabIndex={0}
       data-email-id={email}
-      className="flex items-center px-4 py-3 hover:bg-slate-100"
+      className="flex items-center px-4 py-3 hover:bg-slate-100 focus:bg-slate-100 focus:outline-none"
       onClick={onClick}
+      onKeyUp={onKeyUp}
     >
       <div
         className="rounded-full bg-slate-300 mr-4 pointer-events-none"

@@ -29,11 +29,7 @@ export default function Home() {
   const showList = () => setShouldShowList(true);
   const hideList = () => setShouldShowList(false);
 
-  const selectUser = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLElement;
-    const emailId = target?.getAttribute('data-email-id');
-    if (!emailId) return;
-
+  const selectUser = (emailId: string) => {
     const user = availableUsers.find(({ email }) => email == emailId);
     if (!user) return;
     setSelectedUsers((selectedUsers) => [...selectedUsers, user]);
@@ -74,7 +70,6 @@ export default function Home() {
             searchedText={searchedText}
             onKeyUp={handleSearch}
             onFocus={showList}
-            onBlur={() => {}}
             removeUser={removeUser}
           />
         </div>
@@ -82,7 +77,7 @@ export default function Home() {
           <UserList
             users={searchedUsers}
             keyword={searchedText}
-            onClick={selectUser}
+            selectUser={selectUser}
           />
         )}
       </div>

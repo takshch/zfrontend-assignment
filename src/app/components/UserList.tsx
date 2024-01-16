@@ -7,11 +7,27 @@ import List from './List';
 type UserListProps = {
   keyword: string;
   users: UserType[];
-  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  selectUser: (emailId: string) => void;
 };
 
-function UserList({ users, keyword, onClick }: UserListProps) {
+function UserList({ users, keyword, selectUser }: UserListProps) {
   const [items, setItems] = useState<UserItemType[]>();
+
+  const onKeyUpHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const emailId = target?.getAttribute('data-email-id');
+    if (!emailId) return;
+    if (e.key === 'Enter') {
+      selectUser(emailId);
+    }
+  };
+
+  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const emailId = target?.getAttribute('data-email-id');
+    if (!emailId) return;
+    selectUser(emailId);
+  };
 
   useEffect(() => {
     const searchWords = [keyword];
@@ -39,9 +55,12 @@ function UserList({ users, keyword, onClick }: UserListProps) {
   return (
     <List>
       {items.map((item) => (
-        <li key={item.email}>
-          <UserItem {...item} onClick={onClick} />
-        </li>
+        <UserItem
+          key={item.email}
+          {...item}
+          onClick={onClick}
+          onKeyUp={onKeyUpHandler}
+        />
       ))}
     </List>
   );
